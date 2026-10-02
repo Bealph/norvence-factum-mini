@@ -11,7 +11,7 @@ _SPACES = (" ", " ", " ")
 
 
 def normalize_amount(raw: str | int | float | None) -> Decimal:
-    """Convertit un montant brut (« 1250.00 », « 75 € »…) en Decimal arrondi au centime."""
+    """Convertit un montant brut (« 1 250,00 € », « 1250.00 »…) en Decimal arrondi au centime."""
     if raw is None:
         raise ValueError("montant absent")
     if isinstance(raw, (int, float)):
@@ -26,8 +26,16 @@ def normalize_amount(raw: str | int | float | None) -> Decimal:
     negative = text.startswith("-")
     text = text.lstrip("+-")
 
-    # séparateurs de milliers
-    text = text.replace(",", "")
+    if "," in text and "." in text:
+        if text.rfind(",") > text.rfind("."):
+            # 1.250,00 : point = milliers, virgule = décimale
+            text = text.replace(".", "").replace(",", ".")
+        else:
+            # 1,250.00 : virgule = milliers, point = décimale
+            text = text.replace(",", "")
+    elif "," in text:
+        # 1250,00 : virgule décimale
+        text = text.replace(",", ".")
 
     try:
         value = Decimal(text)
