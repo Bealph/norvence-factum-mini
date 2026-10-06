@@ -28,9 +28,8 @@ source = ["app"]
 branch = true
 
 [tool.coverage.report]
-# 90 = couverture totale mesurée le 2026-10-06 (90,22 %), arrondie à l'entier inférieur :
-# elle ne peut plus baisser sans faire échouer la CI. Fowler juge normaux les hauts 80 / 90 %.
-fail_under = 90
+# Couverture totale mesurée le 2026-10-06 : 90,22 %. Fowler juge normaux les hauts 80 / 90 %.
+fail_under = 90  # mesure arrondie vers le bas : sous 90 %, la CI échoue
 # Le seuil est comparé au total arrondi à cette précision : avec 0, 89,6 % passerait pour 90 %.
 precision = 2
 show_missing = true
